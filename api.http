@@ -1,0 +1,45 @@
+## Tomei a liberdade de deixar mais atributos do que os pedidos, pois no desafio diz :
+## "Uma order tem os seguintes dados", mas não diz que possui APENAS esses dados.
+
+##################
+#      Assets    #
+##################
+# @name createAsset
+POST http://localhost:3000/api/assets
+Content-Type: application/json
+
+{
+    "name": "Amazon",
+    "symbol": "A1"
+}
+
+###
+@assetId = {{ createAsset.response.body._id }}
+###
+GET http://localhost:3000/api/assets
+
+###
+GET http://localhost:3000/api/assets/{{assetId}}
+
+##################
+#     Orders     #
+##################
+# @name createOrder
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+
+{
+    "assetId": "{{ assetId }}",
+    "shares": 10,
+    "price": 100,
+    "type": "BUY"
+}
+
+###
+@orderId = {{ createOrder.response.body._id }}
+
+###
+GET http://localhost:3000/api/orders
+
+###
+GET http://localhost:3000/api/orders/{{ orderId }}
